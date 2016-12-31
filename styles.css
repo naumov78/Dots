@@ -1,0 +1,172 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.group {
+  clear: both;
+  content: "";
+  display: block;
+  width: 0;
+}
+
+.game-container {
+  padding: 20px 0 0 500px;
+}
+
+.links {
+  width: 840px;
+  float: left;
+  /*border: 1px solid black;*/
+  align-content: center;
+  padding: 0 20px 0 10px;
+  text-align: center;
+
+}
+
+.link-list > li {
+  display: inline;
+  padding: 0 10px 0 10px;
+}
+
+.link-list > li > a {
+  font-size: 12px;
+  color: #808080;
+  text-decoration: none;
+}
+
+.link-list > li > a:hover {
+  color: #a6a6a6;
+  cursor: pointer;
+}
+
+.canvas-container {
+  width: 840px;
+  height: 840px;
+  float: left;
+  border: 1px solid black;
+  align-content: center;
+  padding: 40px 20px 20px 50px;
+}
+
+#myCanvas {
+  border: 1px solid black;
+  background: #fff7e6;
+}
+
+.game-info {
+  float: left;
+  padding: 50px 0 0 50px;
+}
+
+.score-board {
+  text-align: center;
+}
+
+.score-board > p {
+  text-align: left;
+}
+
+.winner-declaration {
+  padding-top: 170px;
+  text-align: center;
+}
+
+#red-score, #red-score-amount{
+  color: #e60000;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 1.7px;
+}
+
+#blue-score, #blue-score-amount {
+  color: #0000ff;
+  letter-spacing: 1px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#winner-is {
+  letter-spacing: 0.9px;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.restart {
+  text-align: center;
+}
+
+#restart-button {
+  padding-left: 80px;
+}
+
+#restart-button > input {
+  width: 200px;
+  font-size: 23px;
+  font-weight: 500;
+  color: #0000ff;
+  background: #fff3e6;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+}
+
+#restart-button > input:hover {
+  width: 200px;
+  background: #ffe6cc;
+  color: #e60000;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px #888888;
+}
+
+.red-winner {
+  color: #e60000;
+}
+
+.blue-winner {
+  color: #0000ff;
+}
+
+.invisible {
+  display: none;
+}
+
+#button > input {
+  width: 200px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #0000ff;
+  background: #fff3e6;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+}
+
+#button > input:hover {
+  width: 200px;
+  background: #ffe6cc;
+  color: #e60000;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px #888888;
+}
+
+.game-rules {
+  width: 400px;
+  padding: 0 0 50px 0;
+}
+
+#title {
+  font-size: 19px;
+  color: red;
+  font-weight: bold;
+}
+
+#rules {
+  text-align: justify;
+  font-size: 17px;
+  letter-spacing: 1px;
+  line-height: 25px;
+}

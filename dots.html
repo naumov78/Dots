@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="canvas-container">
+        <canvas id="myCanvas" width="800" height="800"></canvas>
+      </div>
+      <div class="game-info">
+        <div class="game-rules">
+          <p id="title">The Dots: Game Rules</p>
+          <p id="rules">The Dots is the game for two players. You can play either with other human player or a computer. Each turn a player places
+             a dot of corresponding color on the board. When player's dots placed around enemy dot this dot is considered captured and can not participate in
+            the game any more. The captured zone became colored with player's color. The goal of the game is to capture at least 10 enemy's dots.</p>
+        </div>
+        <div class="chose-player-buttons">
+          <span id="button"><input type="button" onClick="startGame(false)" value="Play Against Human" /></span>
+          <span id="button"><input type="button" onClick="startGame(true)" value="Play Against Computer" /></span>
+        </div>
+        <div id="score-board" class="score-board invisible">
+          <p><span id="red-score">RED dots captured:</span>&nbsp;&nbsp;<span id="red-score-amount"></span></p>
+          <p><span id="blue-score">BLUE dots captured:</span>&nbsp;&nbsp;<span id="blue-score-amount"></span></p>
+        </div>
+        <div id="winner-declaration" class="winner-declaration invisible">
+          <p id="winner-is"></p>
+        </div>
+        <div class="restart group">
+          <p id="restart-button"></p>
+        </div>
+      </div>
+      <div class="links">
+        <ul class="link-list">
+          <li><a href="https://github.com/naumov78/Dots">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/aleksei-naumov">LinkedIn</a></li>
+          <li><a href="mailto:aleksei.naumov.nyc@gmail.com">E-mail</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </body>
+  <script src="game-script.js"></script>
+</html>
