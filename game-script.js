@@ -8,7 +8,7 @@ const capturedList = [];
 const capturedEmptySpots = [];
 let captureRoute = [];
 let visitedFromStart = [];
-const canvas = document.getElementById('myCanvas');
+const canvas = document.getElementById('gameBoard');
 const context = canvas.getContext('2d');
 canvas.addEventListener("click", placeDot, false)
 let enemyDotInside = false;
@@ -20,6 +20,8 @@ const capture = new Audio('./sounds/capture.wav');
 const victory = new Audio('./sounds/victory.wav');
 const lose = new Audio('./sounds/lose.wav');
 showCurrentPlayer();
+getColor();
+
 
 function getColor() {
   if (currentPlayer === 'red') {
@@ -37,7 +39,8 @@ function startGame(player) {
   playWithComputer(player);
   createBoard();
   $('chose-player-buttons, game-rules, #rules, #title, #button').addClass('invisible');
-  $('#winner-declaration, #score-board').removeClass('invisible');
+  $('#winner-declaration, #gameBoard, #score-board').removeClass('invisible');
+
 }
 
 function playWithComputer(player) {
@@ -65,6 +68,8 @@ function createBoard() {
     context.stroke();
   }
 }
+
+
 
 function updatePos(pos) {
   return Math.round(pos / 20) * 20
@@ -105,6 +110,7 @@ function updateScores() {
 }
 
 function declareWinner() {
+  $('#declare-winner').removeClass('invisible');
   const winnerField = document.getElementById('winner-is');
   if (winner === 'Red Player') {
     winnerField.innerHTML = `The Winner is ${winner}`
@@ -125,11 +131,9 @@ function getCursorPosition(canvas, event) {
 }
 
 function placeDot(e) {
-  getColor();
   const pos = getCursorPosition(canvas, e);
   const xPos = updatePos(pos[0]);
   const yPos = updatePos(pos[1]);
-  console.log(`[${xPos}, ${yPos}]`);
   if (validMove([xPos, yPos]) && !gameOver) {
     place.play();
     context.beginPath();
@@ -185,7 +189,7 @@ function findRoutes(stack) {
           findRoutes(stack.popped());
         }
       }
-    // from all other dots except sarting dot
+    // from all other dots except starting dot
     } else {
       neighbor = findNeighbor(currentDot);
       if (neighbor !== null) {
@@ -231,7 +235,6 @@ function findNeighborFromStart(dot) {
   }
   return null;
 }
-
 
 function validNeightborFromStart(pos) {
   if (getCurrentPlayerDots(currentPlayer).includeElement(pos) && !visitedFromStart.includeElement(pos)) {
@@ -295,8 +298,6 @@ function createCapture(dots) {
   }
 }
 
-
-
 function enemyDotInsideCheck(dots) {
   enemyDotInside = false;
   captureRoute = [];
@@ -343,6 +344,7 @@ function enemyDotInsideCheck(dots) {
 }
 
   const enemyDots = getCurrentPlayerDots(lightSwitchPlayer());
+
   enemyDots.forEach((dot, i) => {
     if((dot[0] > minX && dot[0] < maxX) && (dot[1] > minY && dot[1] < maxY)) {
       increaseCaptures();
@@ -379,11 +381,54 @@ function switchPlayer() {
   enemyDotInside = false;
   if (currentPlayer === 'red' && computerPlayer) {
     currentPlayer = 'blue';
-    setTimeout(computerMove, 400);
+    immitateHuman();
+    getColor();
+    checkForCapture();
   } else if (currentPlayer === 'red' && !computerPlayer) {
     currentPlayer = 'blue';
+    togleBorderColor();
+    getColor();
+    checkForCapture();
   } else if (currentPlayer === 'blue') {
     currentPlayer = 'red';
+    togleBorderColor();
+    getColor();
+    checkForCapture();
+  }
+}
+
+function togleBorderColor() {
+  if (currentPlayer === 'red') {
+    $('#canvas-container').removeClass('blue-border');
+    $('#canvas-container').addClass('red-border');
+  } else {
+    $('#canvas-container').removeClass('red-border');
+    $('#canvas-container').addClass('blue-border');
+  }
+}
+
+function immitateHuman() {
+  if (redDots.length < 40) {
+    setTimeout(computerMove, 400);
+  } else if (redDots.length < 80) {
+    setTimeout(computerMove, 300);
+  } else if (redDots.length < 150) {
+    setTimeout(computerMove, 200);
+  } else if (redDots.length < 250) {
+    setTimeout(computerMove, 100);
+  }
+  else {
+    computerMove();
+  }
+}
+
+function checkForCapture() {
+  if (lastDotPlaced) {
+  const captureBeforePlacing = checkFourAround(lastDotPlaced);
+    if (captureBeforePlacing.length > 0) {
+      createCapture(captureBeforePlacing);
+      increaseCaptures();
+    }
   }
 }
 
@@ -465,7 +510,6 @@ function getNeiborsFromStart(ownPos, enemyPos) {
   }
 }
 
-
 function searchNeighborsOrder(start, pos) {
     if (start[0] == pos[0] && start[1] == pos[1]) {
       return getNeiborsFromStart(pos, findEnemy(pos));
@@ -497,6 +541,29 @@ function searchNeighborsOrder(start, pos) {
     if (start[0] > pos[0] && start[1] < pos[1]) {
       return [[20, -20], [0, -20], [20, 0], [-20, -20], [20, 20], [0, 20], [-20, 0], [-20, 20]]
     }
+}
+
+// check for capture
+
+function checkFourAround(pos) {
+  const fourDotsAround = [[0, -20], [20, 0], [0, 20], [-20, 0]]
+  const playerDots = getCurrentPlayerDots(currentPlayer);
+  const confirmedPlayerDots = [];
+  let count = 0;
+  for (let i = 0; i < fourDotsAround.length; i++) {
+    const newDot = [pos[0] + fourDotsAround[i][0], pos[1] + fourDotsAround[i][1]];
+      if (playerDots.includeElement(newDot)) {
+        count++;
+        confirmedPlayerDots.push(newDot);
+      }
+  }
+  if (count === 4) {
+    enemyDotInside = true;
+    confirmedPlayerDots.push(confirmedPlayerDots[0]);
+    return confirmedPlayerDots;
+  } else {
+    return [];
+  }
 }
 
 // Computer Player Logic
@@ -710,7 +777,7 @@ Array.prototype.popped = function() {
 }
 
 Array.prototype.includeElement = function(element) {
-  for(i = 0; i < this.length; i++) {
+  for(let i = 0; i < this.length; i++) {
     if (this[i].equals(element)) {
       return true;
     }

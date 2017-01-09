@@ -7,10 +7,13 @@
   </head>
   <body>
     <div class="game-container">
-      <div class="canvas-container">
-        <canvas id="myCanvas" width="800" height="800"></canvas>
+      <div id="score-board" class="score-board invisible">
+        <span id="reds"><span id="red-score">RED dots captured:</span>&nbsp;&nbsp;<span id="red-score-amount"></span></span>
+        <span id="blues"><span id="blue-score">BLUE dots captured:</span>&nbsp;&nbsp;<span id="blue-score-amount"></span></span>
       </div>
-      <div class="game-info">
+      <div id="canvas-container" class="red-border">
+        <canvas class="invisible" id="gameBoard" width="800" height="800"></canvas>
+
         <div class="game-rules">
           <p id="title">The Dots: Game Rules</p>
           <p id="rules">The Dots is the game for two players. You can play either with other human player or a computer. Each turn a player places
@@ -18,20 +21,22 @@
             the game any more. The captured zone became colored with player's color. The goal of the game is to capture at least 10 enemy's dots.</p>
         </div>
         <div class="chose-player-buttons">
-          <span id="button"><input type="button" onClick="startGame(false)" value="Play Against Human" /></span>
-          <span id="button"><input type="button" onClick="startGame(true)" value="Play Against Computer" /></span>
+          <span id="left-button"><span id="button"><input type="button" onClick="startGame(false)" value="Play Against Human" /></span></span>
+          <span id="right-button"><span id="button"><input type="button" onClick="startGame(true)" value="Play Against Computer" /></span></span>
         </div>
-        <div id="score-board" class="score-board invisible">
-          <p><span id="red-score">RED dots captured:</span>&nbsp;&nbsp;<span id="red-score-amount"></span></p>
-          <p><span id="blue-score">BLUE dots captured:</span>&nbsp;&nbsp;<span id="blue-score-amount"></span></p>
-        </div>
-        <div id="winner-declaration" class="winner-declaration invisible">
-          <p id="winner-is"></p>
-        </div>
-        <div class="restart group">
-          <p id="restart-button"></p>
+
+        <div id="declare-winner" class="invisible">
+          <div id="winner-declaration" class="winner-declaration invisible">
+            <p id="winner-is"></p>
+          </div>
+          <div class="restart group">
+            <p id="restart-button"></p>
+          </div>
         </div>
       </div>
+
+
+      <!-- links were here -->
       <div class="links">
         <ul class="link-list">
           <li><a href="https://github.com/naumov78/Dots">GitHub</a></li>
