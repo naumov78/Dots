@@ -427,24 +427,26 @@ function enemyDotInsideCheck(dots) {
 }
 
 function timer(count, display) {
-  function countDown() {
-    if (count > 1) {
-      tick.play()
-      display.innerHTML = `Time left: ${count} seconds`;
-    } else if (count === 1) {
-      tick.play()
-      display.innerHTML = `Time left: ${count} second`;
-    } else {
-      display.innerHTML = ``;
+  if (!gameOver) {
+    function countDown() {
+      if (count > 1) {
+        tick.play()
+        display.innerHTML = `Time left: ${count} seconds`;
+      } else if (count === 1) {
+        tick.play()
+        display.innerHTML = `Time left: ${count} second`;
+      } else {
+        display.innerHTML = ``;
+      }
+      count--;
+      if (count < 0) {
+        window.clearInterval(interval);
+        increaseSwitchTurnCount();
+        switchPlayer();
+      }
     }
-    count--;
-    if (count < 0) {
-      window.clearInterval(interval);
-      increaseSwitchTurnCount();
-      switchPlayer();
-    }
+    interval = setInterval(countDown, 1000);
   }
-  interval = setInterval(countDown, 1000);
 }
 
 function increaseSwitchTurnCount() {
@@ -534,19 +536,19 @@ function increaseCaptures() {
 }
 
 function checkWinner() {
-  if ((capturedReds > 4 && computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount >= 3)) {
+  if ((capturedReds > 4 && computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount > 3)) {
     winner = 'Blue Player'
     lose.play();
     gameOver = true;
     declareWinner();
   }
-  if ((capturedReds > 4 && !computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount >= 3)) {
+  if ((capturedReds > 4 && !computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount > 3)) {
     winner = 'Blue Player'
     victory.play();
     gameOver = true;
     declareWinner();
   }
-  if (capturedBlues > 4 || (blueDots.length < 1 && capturedBlues > 0) || (redDots.length > 0 && blueSwitchTurnCount >= 3)) {
+  if (capturedBlues > 4 || (blueDots.length < 1 && capturedBlues > 0) || (redDots.length > 0 && blueSwitchTurnCount > 3)) {
     winner = 'Red Player'
     victory.play();
     gameOver = true;
