@@ -15,15 +15,39 @@ body {
 .game-container {
   position: relative;
   padding: 20px 0 0 10px;
-  width: 900px;
+  width: 600px;
   margin: 0 auto;
 }
 
+.game-title {
+  width: 600px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+#sound {
+  float: right;
+}
+
+#sound > img {
+  width: 25px;
+  display: block;
+}
+
+.red {
+  color: #cc3300;
+}
+
+.blue {
+  color: #003399;
+}
+
 .links {
-  position: absolute;
-  left: 320px;
-  top: 853px;
-  padding: 0 20px 0 10px;
+  width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  margin-left: -18px;
 }
 
 .link-list > li {
@@ -32,7 +56,7 @@ body {
 }
 
 .link-list > li > a {
-  font-size: 12px;
+  font-size: 14px;
   color: #808080;
   text-decoration: none;
 }
@@ -42,13 +66,18 @@ body {
   cursor: pointer;
 }
 
-
 #canvas-container {
   position: relative;
-  width: 840px;
-  height: 840px;
+  width: 540px;
+  height: 540px;
   float: left;
   padding: 40px 20px 20px 50px;
+}
+
+.border-start {
+  border: 2px solid #006600;
+  border-radius: 50px;
+  box-shadow: 1px 1px 2px #888888;
 }
 
 .red-border {
@@ -67,22 +96,16 @@ body {
 }
 
 #declare-winner {
-  padding: 30px;
-  background: #ffffff;
-  opacity: 1;
-  border: 1px solid black;
-  border-radius: 10px;
   position: absolute;
-  left: 252px;
-  top: 340px;
-  box-shadow: 3px 3px 6px #888888;
+  left: 161px;
+  top: 543px;
 }
 
 .score-board {
   position: absolute;
-  left: 80px;
-  top: 33px;
-  width: 760px;
+  left: 67px;
+  top: 125px;
+  width: 485px;
 }
 
 .winner-declaration {
@@ -114,20 +137,19 @@ body {
 #winner-is {
   letter-spacing: 0.9px;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 22px;
 }
 
 .restart {
-  text-align: center;
 }
 
 #restart-button {
-  padding-left: 70px;
+  padding-left: 60px;
 }
 
 #restart-button > input {
-  width: 200px;
-  font-size: 23px;
+  width: 150px;
+  font-size: 18px;
   font-weight: 500;
   color: #0000ff;
   background: #fff3e6;
@@ -136,7 +158,6 @@ body {
 }
 
 #restart-button > input:hover {
-  width: 200px;
   background: #ffe6cc;
   color: #e60000;
   border: 1px solid #994f00;
@@ -161,7 +182,7 @@ body {
   width: 200px;
   font-size: 16px;
   font-weight: 400;
-  color: #0000ff;
+  color: #003399;
   background: #fff3e6;
   border: 1px solid #994f00;
   border-radius: 5px;
@@ -177,16 +198,50 @@ body {
   box-shadow: 2px 2px 5px #888888;
 }
 
+.level-button {
+  width: 80px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #003399;
+  background: #fff3e6;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+  box-shadow: 0 2px grey;
+}
+
+.level-button:hover {
+  cursor: pointer;
+  background: #ffe6cc;
+}
+
+.pressed-level-button {
+  width: 80px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #003399;
+  background: #ffe6cc;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+  box-shadow: 0 1px #888888;
+  transform: translateY(2px);
+}
+
 .game-rules {
-  width: 800px;
-  padding: 0 0 50px 0;
+  width: 500px;
+}
+
+#level-buttons {
+  position: absolute;
+  left: 183px;
+  top: 480px;
+  width: 450px;
 }
 
 .chose-player-buttons {
   position: absolute;
-  left: 205px;
-  top: 300px;
-  width: 500px;
+  left: 75px;
+  top: 525px;
+  width: 450px;
 }
 
 #left-button {
@@ -199,14 +254,45 @@ body {
 
 #title {
   font-size: 19px;
-  color: #003399;
-  font-weight: bold;
+  margin: 0;
+  color: #cc3300;
+  font-weight: 700;
   text-align: center;
 }
 
 #rules {
   text-align: justify;
-  font-size: 20px;
-  letter-spacing: 1px;
-  line-height: 27px;
+  font-size: 13px;
+}
+
+#rules-points {
+  font-weight: 700;
+  color: #cc3300;
+}
+
+#timer-container {
+  position: absolute;
+  top: 550px;
+  left: 195px;
+  text-align: center;
+}
+
+#timer {
+  color: black;
+  font-size: 22px;
+}
+
+.name {
+  font-size: 12px;
+  text-align: center;
+}
+
+.name > a {
+  color: #808080;
+  text-decoration: none;
+}
+
+.name > a:hover {
+  color: #003399;
+  text-decoration: none;
 }

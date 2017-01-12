@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="game-container">
+      <div id="game-title" class="game-title blue"><span>The Dots</span>
+        <span id="sound">
+          <img src="./images/soundoff.png" onClick="muteSounds()">
+        </span>
+      </div>
+      <div class="links">
+        <ul class="link-list">
+          <li><a href="https://github.com/naumov78/Dots">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/aleksei-naumov">LinkedIn</a></li>
+          <li><a href="mailto:aleksei.naumov.nyc@gmail.com">E-mail</a></li>
+        </ul>
+      </div>
+
+      <div id="score-board" class="score-board invisible">
+        <span id="reds"><span id="red-score">RED dots captured:</span>&nbsp;&nbsp;<span id="red-score-amount"></span></span>
+        <span id="blues"><span id="blue-score">BLUE dots captured:</span>&nbsp;&nbsp;<span id="blue-score-amount"></span></span>
+      </div>
+      <div id="canvas-container" class="border-start">
+        <canvas class="invisible" id="gameBoard" width="500" height="500"></canvas>
+
+        <div class="game-rules">
+          <p id="title">Game Rules</p>
+          <span id="rules">The Dots is the game for two players.
+The goal of the game is to capture at least 5 enemy's dots.
+You can play either with other human player or a computer.<br /><br />
+<span id="rules-points">Make a move:</span> Each turn a player places a dot of corresponding color on the board. The color of game title and the border indicate current player color (red or blue). Players are not allowed to place dots on other dots or inside captured areas.<br />
+<span id="rules-points">Difficalty:</span> The game has 3 difficulty levels. The default difficulty level is Easy. It gives 3 second for a player to make a turn. After time’s out and no dot placed on the board the turn transfers to another player. Medium level allows 2 second to make a turn and Hard level only one second.<br />
+<span id="rules-points">Capture:</span> When player's dots placed around enemy dot this dot is considered captured and can not participate in the game any more. The captured zone became colored with player's color.<br />
+<span id="rules-points">End of the game:</span><br />
+- The game can end up if one of the player captured 5 or more enemy’s dots.<br />
+- If there are no uncaptured  enemy’s dots left on the board even if number of captured less than 5.<br />
+- If there is no valid position to place a dot and neither player had captured 5 enemy’s dots. (Drawn)<br />
+- If a player didn’t place a single dot on the board and skips the turn 3 times and there is at least one enemy’s dot on the board.
+</span>
+        </div>
+        <div id="level-buttons">
+          <span id="level-button"><input id="easy" class="level-button" type="button" onClick="setLevel(id, 3)" value="Easy" /></span>
+          <span id="level-button"><input id="med" class="level-button" type="button" onClick="setLevel(id, 2)" value="Medium" /></span>
+          <span id="level-button"><input id="hard" class="level-button" type="button" onClick="setLevel(id, 1)" value="Hard" /></span>
+        </div>
+        <div class="chose-player-buttons">
+          <span id="left-button"><span id="button"><input type="button" onClick="startGame(false)" value="Play Against Human" /></span></span>
+          <span id="right-button"><span id="button"><input type="button" onClick="startGame(true)" value="Play Against Computer" /></span></span>
+        </div>
+
+        <div id="declare-winner" class="invisible">
+          <div id="winner-declaration" class="winner-declaration invisible">
+            <span id="winner-is"></span>
+          </div>
+          <div class="restart group">
+            <span id="restart-button"></span>
+          </div>
+        </div>
+        <div id="timer-container" class="invisible"><span id="timer"></span></div>
+      </div>
+      <div class="name"><a href="http://alex-naumov.me">made by Alex Naumov</a></div>
+    </div>
+
+  </body>
+  <script src="game-script.js"></script>
+</html>

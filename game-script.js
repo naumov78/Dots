@@ -1,8 +1,11 @@
 const redDots = [];
 const blueDots = [];
 let currentPlayer = 'red';
-let neighbors, allRoutes, stack, visited, lastDotPlaced, count, innerColor, outerColor, winner;
+let neighbors, allRoutes, stack, visited, lastDotPlaced, count, innerColor, outerColor, winner, interval;
 let gameOver = false;
+let redSwitchTurnCount = 0;
+let blueSwitchTurnCount = 0;
+let level = 3;
 let computerPlayer;
 const capturedList = [];
 const capturedEmptySpots = [];
@@ -19,9 +22,37 @@ const error = new Audio('./sounds/error.wav');
 const capture = new Audio('./sounds/capture.wav');
 const victory = new Audio('./sounds/victory.wav');
 const lose = new Audio('./sounds/lose.wav');
-showCurrentPlayer();
+const tick = new Audio('./sounds/metronom.wav');
 getColor();
 
+function muteSounds() {
+  place.muted = true;
+  error.muted = true;
+  capture.muted = true;
+  victory.muted = true;
+  lose.muted = true;
+  tick.muted = true;
+  toggleMuteButton();
+}
+
+function unmuteSounds() {
+  place.muted = false;
+  error.muted = false;
+  capture.muted = false;
+  victory.muted = false;
+  lose.muted = false;
+  tick.muted = false;
+  toggleMuteButton()
+}
+
+function toggleMuteButton() {
+const soundButton = document.getElementById('sound');
+  if (place.muted) {
+    soundButton.innerHTML = `<img src="./images/soundon.png" onClick="unmuteSounds()">`
+  } else {
+    soundButton.innerHTML = `<img src="./images/soundoff.png" onClick="muteSounds()">`
+  }
+}
 
 function getColor() {
   if (currentPlayer === 'red') {
@@ -35,12 +66,27 @@ function getColor() {
   }
 }
 
+function setLevel(id, dif) {
+const ids = [easy, med, hard];
+level = dif;
+for (let i = 0; i < ids.length; i++ ) {
+  if (ids[i].id !== id) {
+    t = "#" + ids[i].id;
+    $(t).removeClass('pressed-level-button').addClass('level-button');
+  }
+}
+idx = "#" + id;
+$(idx).removeClass('level-button').addClass('pressed-level-button').blur();
+}
+
 function startGame(player) {
   playWithComputer(player);
   createBoard();
-  $('chose-player-buttons, game-rules, #rules, #title, #button').addClass('invisible');
-  $('#winner-declaration, #gameBoard, #score-board').removeClass('invisible');
-
+  timer(level, document.getElementById('timer'));
+  $('#game-title').removeClass('blue').addClass('red');
+  $('#canvas-container').removeClass('border-start').addClass('red-border');
+  $('chose-player-buttons, game-rules, #rules, #title, #button, #level-buttons').addClass('invisible');
+  $('#winner-declaration, #gameBoard, #score-board, #timer-container').removeClass('invisible');
 }
 
 function playWithComputer(player) {
@@ -52,24 +98,30 @@ function playWithComputer(player) {
 }
 
 function createBoard() {
-  for (let i = 20; i < 820; i += 20) {
+  for (let i = 20; i <= 500; i += 20) {
     context.beginPath();
     context.moveTo(0, i);
-    context.lineTo(800, i);
+    context.lineTo(500, i);
     context.lineWidth = 0.1;
     context.stroke();
   }
 
-  for (let i = 20; i < 820; i += 20) {
+  for (let i = 20; i <= 500; i += 20) {
     context.beginPath();
     context.moveTo(i, 0);
-    context.lineTo(i, 800);
+    context.lineTo(i, 500);
     context.lineWidth = 0.1;
     context.stroke();
   }
 }
 
-
+function zeroSwitchTurnCount() {
+  if (currentPlayer === 'red') {
+    redSwitchTurnCount = 0;
+  } else {
+    blueSwitchTurnCount = 0;
+  }
+}
 
 function updatePos(pos) {
   return Math.round(pos / 20) * 20
@@ -91,15 +143,10 @@ function empty(pos) {
 }
 
 function validMove(pos) {
-  if (empty(pos) && !capturedEmptySpots.includeElement(pos) && (pos[0] >= 0 && pos[0] <= 800) && (pos[1] >= 0 && pos[1] <= 800)) {
+  if (empty(pos) && !capturedEmptySpots.includeElement(pos) && (pos[0] >= 0 && pos[0] <= 500) && (pos[1] >= 0 && pos[1] <= 500)) {
     return true;
   }
   return false;
-}
-
-function showCurrentPlayer() {
-  const winnerField = document.getElementById('winner-is');
-  winnerField.innerHTML = `${currentPlayer}'s turn`
 }
 
 function updateScores() {
@@ -110,7 +157,9 @@ function updateScores() {
 }
 
 function declareWinner() {
+  window.clearInterval(interval);
   $('#declare-winner').removeClass('invisible');
+  $('#timer-container').addClass('invisible');
   const winnerField = document.getElementById('winner-is');
   if (winner === 'Red Player') {
     winnerField.innerHTML = `The Winner is ${winner}`
@@ -152,8 +201,8 @@ function placeDot(e) {
     stack.push(lastDotPlaced);
     findRoutes(stack);
     createCapture(processAllRoutes());
+    zeroSwitchTurnCount();
     switchPlayer();
-    showCurrentPlayer();
     updateScores();
     checkWinner();
   } else {
@@ -302,9 +351,9 @@ function enemyDotInsideCheck(dots) {
   enemyDotInside = false;
   captureRoute = [];
   if (dots.length < 1) { return }
-  let minY = 800;
+  let minY = 500;
   let maxY = 0;
-  let minX = 800;
+  let minX = 500;
   let maxX = 0;
   dots.forEach((dot) => {
     if(dot[0] < minX) {
@@ -377,33 +426,69 @@ function enemyDotInsideCheck(dots) {
   }
 }
 
+function timer(count, display) {
+  function countDown() {
+    if (count > 1) {
+      tick.play()
+      display.innerHTML = `Time left: ${count} seconds`;
+    } else if (count === 1) {
+      tick.play()
+      display.innerHTML = `Time left: ${count} second`;
+    } else {
+      display.innerHTML = ``;
+    }
+    count--;
+    if (count < 0) {
+      window.clearInterval(interval);
+      increaseSwitchTurnCount();
+      switchPlayer();
+    }
+  }
+  interval = setInterval(countDown, 1000);
+}
+
+function increaseSwitchTurnCount() {
+    if (currentPlayer === 'red') {
+      redSwitchTurnCount++;
+    } else {
+      blueSwitchTurnCount++;
+    }
+}
+
 function switchPlayer() {
+  checkWinner();
+  window.clearInterval(interval);
   enemyDotInside = false;
   if (currentPlayer === 'red' && computerPlayer) {
     currentPlayer = 'blue';
     immitateHuman();
     getColor();
     checkForCapture();
+    timer(level, document.getElementById('timer'));
   } else if (currentPlayer === 'red' && !computerPlayer) {
     currentPlayer = 'blue';
-    togleBorderColor();
+    togglePlayerColor();
     getColor();
     checkForCapture();
+    timer(level, document.getElementById('timer'));
   } else if (currentPlayer === 'blue') {
     currentPlayer = 'red';
-    togleBorderColor();
+    togglePlayerColor();
     getColor();
     checkForCapture();
+    timer(level, document.getElementById('timer'));
   }
 }
 
-function togleBorderColor() {
-  if (currentPlayer === 'red') {
-    $('#canvas-container').removeClass('blue-border');
-    $('#canvas-container').addClass('red-border');
-  } else {
-    $('#canvas-container').removeClass('red-border');
-    $('#canvas-container').addClass('blue-border');
+function togglePlayerColor() {
+  if (!gameOver) {
+    if (currentPlayer === 'red') {
+      $('#canvas-container').removeClass('blue-border').addClass('red-border');
+      $('#game-title').removeClass('blue').addClass('red');
+    } else {
+      $('#canvas-container').removeClass('red-border').addClass('blue-border');
+      $('#game-title').removeClass('red').addClass('blue');
+    }
   }
 }
 
@@ -449,19 +534,19 @@ function increaseCaptures() {
 }
 
 function checkWinner() {
-  if (capturedReds > 9 && computerPlayer) {
+  if ((capturedReds > 4 && computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount >= 3)) {
     winner = 'Blue Player'
     lose.play();
     gameOver = true;
     declareWinner();
   }
-  if (capturedReds > 9 && !computerPlayer) {
+  if ((capturedReds > 4 && !computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount >= 3)) {
     winner = 'Blue Player'
     victory.play();
     gameOver = true;
     declareWinner();
   }
-  if (capturedBlues > 9) {
+  if (capturedBlues > 4 || (blueDots.length < 1 && capturedBlues > 0) || (redDots.length > 0 && blueSwitchTurnCount >= 3)) {
     winner = 'Red Player'
     victory.play();
     gameOver = true;
@@ -753,6 +838,7 @@ function placeAiDot(pos) {
     lastDotPlaced = pos;
     place.play();
     allRoutes = [];
+    blueSwitchTurnCount = 0;
     visitedFromStart = [];
     stack = [];
     visited = [];
@@ -760,9 +846,8 @@ function placeAiDot(pos) {
     findRoutes(stack);
     createCapture(processAllRoutes());
     switchPlayer();
-    showCurrentPlayer();
     updateScores();
-    setTimeout(checkWinner, 500);
+    checkWinner();
 }
 
 // Helper methods
