@@ -1,7 +1,7 @@
 # The Dots
 
 
-[Live Version](http://alex-naumov.me/dots/dots.html)
+[Live Version](http://alex-naumov.me/dots/)
 
 [GitHub](https://github.com/naumov78/Dots)
 
@@ -16,7 +16,6 @@ dots can be placed on the intersections of these lines.
 
 ![Screenshot](/docs/wireframes/gameplay2.png)
 
-![Screenshot](/docs/wireframes/gameplay3.png)
 
 #### Features
 * Player can chose either play with other human player or a computer player
@@ -29,5 +28,4 @@ The project is implemented with the following technologies:
 
 * Vanilla JavaScript
 * HTML5 Canvas
-* jQuery
 * CSS
